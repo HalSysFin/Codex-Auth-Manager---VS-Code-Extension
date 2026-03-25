@@ -1,0 +1,1 @@
+{"version":3,"file":"authManagerClient.js","sourceRoot":"","sources":["../../../src/authManagerClient.ts"],"names":[],"mappings":";;;AAAA,gGAI8D;AAqBrD,uGAvBP,6CAAsB,OAuBO;AAAE,6GAtB/B,mDAA4B,OAsB+B;AAI7D,MAAa,iBAAkB,SAAQ,wCAAuB;IAC5D,KAAK,CAAC,wBAAwB,CAC5B,OAAe,EACf,KAA6C;QAE7C,OAAO,IAAI,CAAC,gBAAgB,CAAC,OAAO,EAAE,KAAK,CAAC,CAAA;IAC9C,CAAC;CACF;AAPD,8CAOC"}
