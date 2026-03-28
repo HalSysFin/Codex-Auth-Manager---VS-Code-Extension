@@ -6,6 +6,7 @@ export function defaultRuntimeSettings() {
         machineId: '',
         agentId: '',
         authFilePath: DEFAULT_AUTH_FILE_PATH,
+        openDashboardPath: '',
         refreshIntervalSeconds: 60,
         telemetryIntervalSeconds: 300,
         autoRenew: true,
@@ -36,6 +37,7 @@ export function defaultRuntimeLeaseState(machineId, agentId, authFilePath = DEFA
         latestTelemetryAt: null,
         latestUtilizationPct: null,
         latestQuotaRemaining: null,
+        credentialAuthUpdatedAt: null,
         lastAuthWriteAt: null,
         lastBackendRefreshAt: null,
         replacementRequired: false,
@@ -56,6 +58,9 @@ export function updateRuntimeStateFromLease(state, lease, nowIso = new Date().to
         latestTelemetryAt: lease.last_telemetry_at,
         latestUtilizationPct: lease.latest_utilization_pct,
         latestQuotaRemaining: lease.latest_quota_remaining,
+        credentialAuthUpdatedAt: typeof lease.metadata?.credential_auth_updated_at === 'string'
+            ? lease.metadata.credential_auth_updated_at
+            : state.credentialAuthUpdatedAt,
         lastBackendRefreshAt: nowIso,
     };
 }
@@ -70,6 +75,7 @@ export function updateRuntimeStateFromLeaseStatus(state, lease, nowIso = new Dat
         latestTelemetryAt: lease.latest_telemetry_at,
         latestUtilizationPct: lease.latest_utilization_pct,
         latestQuotaRemaining: lease.latest_quota_remaining,
+        credentialAuthUpdatedAt: lease.credential_auth_updated_at ?? state.credentialAuthUpdatedAt,
         replacementRequired: lease.replacement_required,
         rotationRecommended: lease.rotation_recommended,
         lastBackendRefreshAt: nowIso,
