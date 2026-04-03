@@ -457,6 +457,7 @@ class AuthManagerController {
 
   async requestNewLease(): Promise<void> {
     this.log('Requesting a fresh auth lease')
+    const previousCredentialId = this.state.credentialId
     try {
       await requestFreshLease({
         currentLeaseId: this.state.leaseId,
@@ -477,7 +478,11 @@ class AuthManagerController {
           }
         },
         acquireFreshLease: async () => {
-          await this.acquireAndMaterializeLease('manual request new lease')
+          await this.acquireAndMaterializeLease(
+            'manual request new lease',
+            true,
+            previousCredentialId ? [previousCredentialId] : undefined,
+          )
         },
       })
       this.setMessage(`Fresh auth lease acquired for ${deriveAccountDisplayName(this.state)}.`)
@@ -582,7 +587,11 @@ class AuthManagerController {
     }
   }
 
-  private async acquireAndMaterializeLease(reason: string, showPopup = true): Promise<void> {
+  private async acquireAndMaterializeLease(
+    reason: string,
+    showPopup = true,
+    excludeCredentialIds?: string[],
+  ): Promise<void> {
     this.log(`Acquiring lease (${reason})`)
     const previousLeaseId = this.state.leaseId
     try {
@@ -591,6 +600,7 @@ class AuthManagerController {
         agentId: this.state.agentId,
         requestedTtlSeconds: 1800,
         reason,
+        excludeCredentialIds,
       })
       this.backendReachable = true
       if (response.status !== 'ok' || !response.lease) {
